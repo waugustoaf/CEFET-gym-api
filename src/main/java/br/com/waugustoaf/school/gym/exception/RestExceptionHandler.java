@@ -15,7 +15,9 @@ import java.util.Map;
 public class RestExceptionHandler {
     @ExceptionHandler(AppException.class)
     public ResponseEntity<?> handleError(AppException exception) {
-        return new ResponseEntity<>(exception.getFormattedValues(), HttpStatus.valueOf(exception.getStatusCode()));
+        return new ResponseEntity<>(
+                exception.getFormattedValues(), HttpStatus.valueOf(exception.getStatusCode())
+        );
     }
 
     @ResponseStatus(HttpStatus.BAD_REQUEST)
@@ -32,6 +34,7 @@ public class RestExceptionHandler {
 
         Map<String, Object> response = new HashMap<String, Object>();
         response.put("errored", true);
+        response.put("errorType", "validationError");
         response.put("errors", errors);
 
         return ResponseEntity.badRequest().body(response);

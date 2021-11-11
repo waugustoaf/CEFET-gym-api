@@ -14,7 +14,7 @@ public class AppException extends RuntimeException {
         super(message);
 
         this.message = message;
-        this.statusCode = 500;
+        this.statusCode = 400;
         this.errorKey = "error.generic";
     }
 
@@ -22,7 +22,7 @@ public class AppException extends RuntimeException {
         super(message);
 
         this.message = message;
-        this.statusCode = 500;
+        this.statusCode = 400;
         this.errorKey = errorKey;
     }
 
@@ -48,6 +48,8 @@ public class AppException extends RuntimeException {
         hashed.put("message", this.getMessage());
         hashed.put("statusCode", this.getStatusCode());
         hashed.put("errorKey", this.getErrorKey());
+        hashed.put("errored", true);
+        hashed.put("errorType", "applicationError");
 
         return hashed;
     }

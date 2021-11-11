@@ -1,20 +1,16 @@
 package br.com.waugustoaf.school.gym.domain;
 
 import br.com.waugustoaf.school.gym.validation.constraints.BirthDate;
-import br.com.waugustoaf.school.gym.validation.constraints.UserType;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.SQLDelete;
 import org.hibernate.annotations.UpdateTimestamp;
 import org.hibernate.annotations.Where;
-import org.hibernate.validator.constraints.br.CPF;
 
 import javax.persistence.*;
 import javax.validation.constraints.Email;
-import javax.validation.constraints.Min;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
 import java.util.Date;
@@ -38,18 +34,24 @@ public class User {
     public Long id;
 
     @Column(nullable = false)
-    @NotBlank(message = "Name cannot be null")
+    @NotBlank(message = "users.name.null")
     public String name;
 
     @Column(nullable = false)
-    @Email(message = "Email is invalid")
+    @Email(message = "users.email.null")
     public String email;
 
-    @Size(min=11, message = "Invalid CPF")
+    @Column(nullable = false)
+    @NotBlank(message = "users.password.null")
+    @Size(min=6, message = "users.password.small")
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
+    public String password;
+
+    @Size(min=11, message = "users.cpf.small")
     @Column(unique = true)
     public String cpf;
 
-    @Size(min=15, message = "Invalid phone")
+    @Size(min=15, message = "users.phone.small")
     public String phone;
 
     public String avatar;
