@@ -11,6 +11,7 @@ import org.hibernate.annotations.Where;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 import java.util.Date;
 
 @Data
@@ -18,21 +19,21 @@ import java.util.Date;
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity(name = "diets")
-@SQLDelete(sql = "UPDATE users SET deleted_at = CURRENT_TIMESTAMP WHERE id=?")
+@SQLDelete(sql = "UPDATE diets SET deleted_at = CURRENT_TIMESTAMP WHERE id=?")
 @Where(clause = "deleted_at is null")
 public class Diet {
     @Id()
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     public Long id;
 
-    @NotBlank(message = "diets.feed_time.null")
+    @NotNull(message = "diets.feed_time.null")
     public Date feed_time;
 
     @NotBlank(message = "diets.food_type.null")
-    public Date food_type;
+    public String food_type;
 
     @NotBlank(message = "diets.guidance.null")
-    public Date guidance;
+    public String guidance;
 
     @CreationTimestamp()
     @Temporal(TemporalType.TIMESTAMP)

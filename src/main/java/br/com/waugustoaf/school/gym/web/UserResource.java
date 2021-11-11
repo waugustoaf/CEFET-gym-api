@@ -49,7 +49,7 @@ public class UserResource {
 
         User response = this.userService.save(user);
         return ResponseEntity
-                .created(new URI("/api/pessoas" + response.getId()))
+                .created(new URI("/api/users/" + response.getId()))
                 .body(response);
     }
 
