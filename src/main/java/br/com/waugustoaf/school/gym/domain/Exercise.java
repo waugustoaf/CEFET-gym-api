@@ -5,9 +5,7 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.CreationTimestamp;
-import org.hibernate.annotations.SQLDelete;
 import org.hibernate.annotations.UpdateTimestamp;
-import org.hibernate.annotations.Where;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
@@ -19,25 +17,32 @@ import java.util.UUID;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-@Entity(name = "diets")
-public class Diet {
+@Entity(name = "exercises")
+public class Exercise {
+    public enum Type {
+        gain,
+        loss
+    }
+
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "id", updatable = false, unique = true, nullable = false)
     @org.hibernate.annotations.Type(type = "uuid-char")
     public UUID id;
 
-    @NotNull(message = "diets.feed_time.null")
-    @Column(nullable = false)
-    public String feed_time;
+    @NotNull(message = "diets.type.null")
+    @NotBlank(message = "diets.type.null")
+    @Column(nullable = false, columnDefinition = "ENUM('gain', 'loss')")
+    @Enumerated(EnumType.STRING)
+    public Type type;
 
-    @NotBlank(message = "diets.food_type.null")
+    @NotBlank(message = "diets.duration.null")
     @Column(nullable = false)
-    public String food_type;
+    public String duration;
 
-    @NotBlank(message = "diets.instructions.null")
+    @NotBlank(message = "diets.repetitions.null")
     @Column(nullable = false)
-    public String instructions;
+    public int repetitions;
 
     @CreationTimestamp()
     @Temporal(TemporalType.TIMESTAMP)

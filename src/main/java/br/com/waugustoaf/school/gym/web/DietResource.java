@@ -31,14 +31,14 @@ public class DietResource {
         return ResponseEntity.ok().body(diets);
     }
 
-    @GetMapping("{id}")
+    @GetMapping("/{id}")
     public ResponseEntity<Diet> show(@PathVariable("id") Long id) {
         Optional<Diet> diet = this.dietService.findOne(id);
 
         if(diet.isPresent()) {
             return ResponseEntity.ok().body(diet.get());
         } else {
-            throw new AppException("Cannot find a diet with this id", "diets.notFound");
+            return ResponseEntity.notFound().build();
         }
     }
 

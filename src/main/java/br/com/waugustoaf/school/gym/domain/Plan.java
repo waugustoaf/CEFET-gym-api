@@ -5,13 +5,10 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.CreationTimestamp;
-import org.hibernate.annotations.SQLDelete;
 import org.hibernate.annotations.UpdateTimestamp;
-import org.hibernate.annotations.Where;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotNull;
 import java.util.Date;
 import java.util.UUID;
 
@@ -19,25 +16,29 @@ import java.util.UUID;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-@Entity(name = "diets")
-public class Diet {
+@Entity(name = "plans")
+public class Plan {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "id", updatable = false, unique = true, nullable = false)
     @org.hibernate.annotations.Type(type = "uuid-char")
     public UUID id;
 
-    @NotNull(message = "diets.feed_time.null")
+    @NotBlank(message = "diets.schedule.null")
     @Column(nullable = false)
-    public String feed_time;
+    public String schedule;
 
-    @NotBlank(message = "diets.food_type.null")
+    @NotBlank(message = "diets.days.null")
     @Column(nullable = false)
-    public String food_type;
+    public String days;
 
-    @NotBlank(message = "diets.instructions.null")
+    @NotBlank(message = "diets.name.null")
     @Column(nullable = false)
-    public String instructions;
+    public String name;
+
+    @NotBlank(message = "diets.value.null")
+    @Column(nullable = false, columnDefinition = "decimal(10, 2)")
+    public double value;
 
     @CreationTimestamp()
     @Temporal(TemporalType.TIMESTAMP)

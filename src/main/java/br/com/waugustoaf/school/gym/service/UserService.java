@@ -52,13 +52,7 @@ public class UserService {
             Optional<User> userAlreadyExists = this.userRepository.findByCpf(user.getCpf());
 
             if(userAlreadyExists.isPresent()) {
-                if(userAlreadyExists.get().getDeleted_at() == null) {
-                    throw new AppException("An user with this cpf already exists", "users.alreadyExists");
-                } else {
-                    throw new AppException(
-                            "An user with this cpf is disabled. You can enabled it again", "users.disabled"
-                    );
-                }
+                throw new AppException("An user with this cpf already exists", "users.alreadyExists");
             }
 
             user.setPassword(encoder.encode(user.getPassword()));

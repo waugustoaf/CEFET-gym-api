@@ -41,6 +41,6 @@ public class DietService {
 
         this.dietRepository.deleteById(id);
 
-        return ResponseEntity.noContent(). build();
+        return ResponseEntity.noContent().build();
     }
 }

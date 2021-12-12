@@ -5,13 +5,10 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.CreationTimestamp;
-import org.hibernate.annotations.SQLDelete;
 import org.hibernate.annotations.UpdateTimestamp;
-import org.hibernate.annotations.Where;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotNull;
 import java.util.Date;
 import java.util.UUID;
 
@@ -19,25 +16,35 @@ import java.util.UUID;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-@Entity(name = "diets")
-public class Diet {
+@Entity(name = "notifications")
+public class Notification {
+    public enum Type {
+        urgent,
+        normal
+    }
+
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "id", updatable = false, unique = true, nullable = false)
     @org.hibernate.annotations.Type(type = "uuid-char")
     public UUID id;
 
-    @NotNull(message = "diets.feed_time.null")
+    @NotBlank(message = "diets.title.null")
     @Column(nullable = false)
-    public String feed_time;
+    public String title;
 
-    @NotBlank(message = "diets.food_type.null")
+    @NotBlank(message = "diets.message.null")
     @Column(nullable = false)
-    public String food_type;
+    public String message;
 
-    @NotBlank(message = "diets.instructions.null")
-    @Column(nullable = false)
-    public String instructions;
+    @NotBlank(message = "diets.type.null")
+    @Column(nullable = false, columnDefinition = "ENUM('urgent', 'normal')")
+    @Enumerated(EnumType.STRING)
+    public Type type;
+
+    @NotBlank(message = "diets.repetitions.null")
+    @Column(nullable = false, columnDefinition = "decimal(10, 2)")
+    public double value;
 
     @CreationTimestamp()
     @Temporal(TemporalType.TIMESTAMP)

@@ -1,7 +1,6 @@
 package br.com.waugustoaf.school.gym.validation.constraints;
 
 import br.com.waugustoaf.school.gym.validation.BirthDateValidation;
-import br.com.waugustoaf.school.gym.validation.UserTypeValidation;
 
 import javax.validation.Constraint;
 import javax.validation.Payload;
