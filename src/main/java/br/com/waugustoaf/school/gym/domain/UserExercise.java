@@ -10,17 +10,18 @@ import org.hibernate.annotations.UpdateTimestamp;
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
 import java.util.Date;
+import java.util.Set;
 import java.util.UUID;
 
 @Data
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-@Entity(name = "notifications")
-public class Notification {
-    public enum Type {
-        urgent,
-        normal
+@Entity(name = "user_exercise")
+public class UserExercise {
+    public enum Focus{
+        gain,
+        loss
     }
 
     @Id
@@ -29,24 +30,30 @@ public class Notification {
     @org.hibernate.annotations.Type(type = "uuid-char")
     public UUID id;
 
-    @NotBlank(message = "diets.title.null")
-    @Column(nullable = false)
-    public String title;
+    @ManyToOne
+    @JoinColumn(name = "user_id")
+    public User user;
 
-    @NotBlank(message = "diets.message.null")
-    @Column(nullable = false)
-    public String message;
+    @ManyToOne
+    @JoinColumn(name = "exercise_id")
+    public Exercise exercise;
 
-    @NotBlank(message = "diets.type.null")
-    @Column(nullable = false, columnDefinition = "ENUM('urgent', 'normal')")
-    @Enumerated(EnumType.STRING)
-    public Type type;
+    @ManyToOne
+    @JoinColumn(name = "employee_id")
+    public Employee employee;
 
-    @CreationTimestamp()
-    @Temporal(TemporalType.TIMESTAMP)
+    public boolean active;
+
+    @Column(columnDefinition = "enum('gain', 'loss')")
+    public Focus focus;
+
+    public Date start_date;
+
+    public Date end_date;
+
+    public String schedule;
+
     public Date created_at;
 
-    @UpdateTimestamp()
-    @Temporal(TemporalType.TIMESTAMP)
     public Date updated_at;
 }

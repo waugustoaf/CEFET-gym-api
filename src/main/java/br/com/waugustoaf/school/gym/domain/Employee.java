@@ -10,43 +10,32 @@ import org.hibernate.annotations.UpdateTimestamp;
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
 import java.util.Date;
+import java.util.Set;
 import java.util.UUID;
 
 @Data
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-@Entity(name = "notifications")
-public class Notification {
-    public enum Type {
-        urgent,
-        normal
-    }
-
+@Entity(name = "employees")
+public class Employee {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "id", updatable = false, unique = true, nullable = false)
     @org.hibernate.annotations.Type(type = "uuid-char")
     public UUID id;
 
-    @NotBlank(message = "diets.title.null")
-    @Column(nullable = false)
-    public String title;
+    @Column(name = "hours_per_day")
+    public int hoursPerDay;
 
-    @NotBlank(message = "diets.message.null")
-    @Column(nullable = false)
-    public String message;
+    @Column(columnDefinition = "decimal(10, 2)")
+    public double wage;
 
-    @NotBlank(message = "diets.type.null")
-    @Column(nullable = false, columnDefinition = "ENUM('urgent', 'normal')")
-    @Enumerated(EnumType.STRING)
-    public Type type;
+    public String education;
 
-    @CreationTimestamp()
-    @Temporal(TemporalType.TIMESTAMP)
+    public int payment_day;
+
     public Date created_at;
 
-    @UpdateTimestamp()
-    @Temporal(TemporalType.TIMESTAMP)
     public Date updated_at;
 }

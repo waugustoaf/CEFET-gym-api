@@ -10,43 +10,40 @@ import org.hibernate.annotations.UpdateTimestamp;
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
 import java.util.Date;
+import java.util.Set;
 import java.util.UUID;
 
 @Data
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-@Entity(name = "notifications")
-public class Notification {
-    public enum Type {
-        urgent,
-        normal
-    }
-
+@Entity(name = "user_diets")
+public class UserDiet {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "id", updatable = false, unique = true, nullable = false)
     @org.hibernate.annotations.Type(type = "uuid-char")
     public UUID id;
 
-    @NotBlank(message = "diets.title.null")
-    @Column(nullable = false)
-    public String title;
+    @ManyToOne
+    @JoinColumn(name = "user_id")
+    public User user;
 
-    @NotBlank(message = "diets.message.null")
-    @Column(nullable = false)
-    public String message;
+    @ManyToOne
+    @JoinColumn(name = "diet_id")
+    public Diet diet;
 
-    @NotBlank(message = "diets.type.null")
-    @Column(nullable = false, columnDefinition = "ENUM('urgent', 'normal')")
-    @Enumerated(EnumType.STRING)
-    public Type type;
+    @ManyToOne
+    @JoinColumn(name = "employee_id")
+    public Employee employee;
 
-    @CreationTimestamp()
-    @Temporal(TemporalType.TIMESTAMP)
+    public Date start_date;
+
+    public Date end_date;
+
+    public boolean active;
+
     public Date created_at;
 
-    @UpdateTimestamp()
-    @Temporal(TemporalType.TIMESTAMP)
     public Date updated_at;
 }

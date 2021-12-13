@@ -16,37 +16,21 @@ import java.util.UUID;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-@Entity(name = "notifications")
-public class Notification {
-    public enum Type {
-        urgent,
-        normal
-    }
-
+@Entity(name = "payments")
+public class Payment {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "id", updatable = false, unique = true, nullable = false)
     @org.hibernate.annotations.Type(type = "uuid-char")
     public UUID id;
 
-    @NotBlank(message = "diets.title.null")
-    @Column(nullable = false)
-    public String title;
+    public String receipt_image;
 
-    @NotBlank(message = "diets.message.null")
-    @Column(nullable = false)
-    public String message;
+    @ManyToOne
+    @JoinColumn(name = "user_id")
+    public User user;
 
-    @NotBlank(message = "diets.type.null")
-    @Column(nullable = false, columnDefinition = "ENUM('urgent', 'normal')")
-    @Enumerated(EnumType.STRING)
-    public Type type;
-
-    @CreationTimestamp()
-    @Temporal(TemporalType.TIMESTAMP)
     public Date created_at;
 
-    @UpdateTimestamp()
-    @Temporal(TemporalType.TIMESTAMP)
     public Date updated_at;
 }
