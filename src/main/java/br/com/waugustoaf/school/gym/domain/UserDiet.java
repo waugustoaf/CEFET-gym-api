@@ -9,6 +9,7 @@ import org.hibernate.annotations.UpdateTimestamp;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 import java.util.Date;
 import java.util.Set;
 import java.util.UUID;
@@ -27,23 +28,35 @@ public class UserDiet {
 
     @ManyToOne
     @JoinColumn(name = "user_id")
+    @NotNull(message = "userDiets.user.null")
     public User user;
 
     @ManyToOne
     @JoinColumn(name = "diet_id")
+    @NotNull(message = "userDiets.diet.null")
     public Diet diet;
 
     @ManyToOne
     @JoinColumn(name = "employee_id")
+    @NotNull(message = "userDiets.employee.null")
     public Employee employee;
 
+    @CreationTimestamp()
+    @Temporal(TemporalType.TIMESTAMP)
     public Date start_date;
 
+    @CreationTimestamp()
+    @Temporal(TemporalType.TIMESTAMP)
     public Date end_date;
 
+    @NotNull(message = "userDiets.active.null")
     public boolean active;
 
+    @CreationTimestamp()
+    @Temporal(TemporalType.TIMESTAMP)
     public Date created_at;
 
+    @CreationTimestamp()
+    @Temporal(TemporalType.TIMESTAMP)
     public Date updated_at;
 }

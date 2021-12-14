@@ -9,6 +9,7 @@ import org.hibernate.annotations.UpdateTimestamp;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 import java.util.Date;
 import java.util.Set;
 import java.util.UUID;
@@ -42,18 +43,28 @@ public class UserExercise {
     @JoinColumn(name = "employee_id")
     public Employee employee;
 
+    @NotNull(message = "userExercise.active.null")
     public boolean active;
 
     @Column(columnDefinition = "enum('gain', 'loss')")
+    @NotNull(message = "userExercise.focus.null")
     public Focus focus;
 
+    @CreationTimestamp()
+    @Temporal(TemporalType.TIMESTAMP)
     public Date start_date;
 
+    @CreationTimestamp()
+    @Temporal(TemporalType.TIMESTAMP)
     public Date end_date;
 
     public String schedule;
 
+    @CreationTimestamp()
+    @Temporal(TemporalType.TIMESTAMP)
     public Date created_at;
 
+    @CreationTimestamp()
+    @Temporal(TemporalType.TIMESTAMP)
     public Date updated_at;
 }
