@@ -3,15 +3,19 @@ package br.com.waugustoaf.school.gym.web;
 import br.com.waugustoaf.school.gym.domain.User;
 import br.com.waugustoaf.school.gym.exception.AppException;
 import br.com.waugustoaf.school.gym.service.UserService;
+import br.com.waugustoaf.school.gym.util.JwtUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 @RestController
@@ -20,6 +24,10 @@ public class UserResource {
     private final Logger log = LoggerFactory.getLogger(UserResource.class);
     private final UserService userService;
 
+    @Autowired
+    private JwtUtil jwtUtil;
+
+    @Autowired
     public UserResource(UserService userService) {
         this.userService = userService;
     }
@@ -48,6 +56,7 @@ public class UserResource {
         }
 
         User response = this.userService.save(user);
+
         return ResponseEntity
                 .created(new URI("/api/users/" + response.getId()))
                 .body(response);
