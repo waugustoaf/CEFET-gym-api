@@ -2,6 +2,8 @@ package br.com.waugustoaf.school.gym.util;
 
 import br.com.waugustoaf.school.gym.domain.User;
 import io.jsonwebtoken.SignatureAlgorithm;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
@@ -14,6 +16,8 @@ import java.util.function.Function;
 
 @Service
 public class JwtUtil {
+    private Logger log = LoggerFactory.getLogger(JwtUtil.class);
+
     @Value("${jwt.secret}")
     private String secret;
 
@@ -51,6 +55,6 @@ public class JwtUtil {
 
     public Boolean validateToken(String token, User user) {
         final String id = extractId(token);
-        return user.id.equals(id) && !isTokenExpired(token);
+        return user.id.toString().equals(id) && !isTokenExpired(token);
     }
 }

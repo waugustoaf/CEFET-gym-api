@@ -9,6 +9,7 @@ import org.hibernate.annotations.UpdateTimestamp;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 import java.util.Date;
 import java.util.UUID;
 
@@ -24,19 +25,19 @@ public class Plan {
     @org.hibernate.annotations.Type(type = "uuid-char")
     public UUID id;
 
-    @NotBlank(message = "diets.schedule.null")
+    @NotBlank(message = "'schedule' é obrigatório")
     @Column(nullable = false)
     public String schedule;
 
-    @NotBlank(message = "diets.days.null")
+    @NotBlank(message = "'days' é obrigatório")
     @Column(nullable = false)
     public String days;
 
-    @NotBlank(message = "diets.name.null")
+    @NotBlank(message = "'name' é obrigatório")
     @Column(nullable = false)
     public String name;
 
-    @NotBlank(message = "diets.value.null")
+    @NotNull(message = "'value' é obrigatório")
     @Column(nullable = false, columnDefinition = "decimal(10, 2)")
     public double value;
 

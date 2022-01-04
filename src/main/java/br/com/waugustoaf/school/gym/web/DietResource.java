@@ -13,6 +13,7 @@ import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.List;
 import java.util.Optional;
+import java.util.UUID;
 
 @RestController
 @RequestMapping("/diets")
@@ -24,7 +25,7 @@ public class DietResource {
         this.dietService = dietService;
     }
 
-    @GetMapping("/")
+    @GetMapping
     public ResponseEntity<List<Diet>> index() {
         List<Diet> diets = this.dietService.findAll();
 
@@ -32,7 +33,7 @@ public class DietResource {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Diet> show(@PathVariable("id") Long id) {
+    public ResponseEntity<Diet> show(@PathVariable("id") UUID id) {
         Optional<Diet> diet = this.dietService.findOne(id);
 
         if(diet.isPresent()) {
@@ -42,7 +43,7 @@ public class DietResource {
         }
     }
 
-    @PostMapping("/")
+    @PostMapping
     public ResponseEntity<Diet> store(@RequestBody @Valid Diet diet) throws URISyntaxException {
         if(diet.getId() != null) {
             throw new AppException("A new diet cannot have property id", "diets.noIdOnStore");
@@ -55,7 +56,7 @@ public class DietResource {
     }
 
     @PutMapping("{id}")
-    public ResponseEntity<Diet> update(@RequestBody @Valid Diet newDiet, @PathVariable("id") Long id) {
+    public ResponseEntity<Diet> update(@RequestBody @Valid Diet newDiet, @PathVariable("id") UUID id) {
         Optional<Diet> diet = this.dietService.findOne(id);
 
         if(diet.isEmpty()) {
@@ -71,7 +72,7 @@ public class DietResource {
     }
 
     @DeleteMapping("{id}")
-    public void delete(@PathVariable("id") Long id) {
+    public void delete(@PathVariable("id") UUID id) {
         this.dietService.delete(id);
     }
 }

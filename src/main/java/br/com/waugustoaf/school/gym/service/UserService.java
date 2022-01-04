@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.UUID;
 
 @Service
 public class UserService {
@@ -27,7 +28,7 @@ public class UserService {
         return this.userRepository.findAll();
     }
 
-    public Optional<User> findOne(Long id) {
+    public Optional<User> findOne(UUID id) {
         return this.userRepository.findById(id);
     }
 
@@ -39,20 +40,12 @@ public class UserService {
         return encoder.matches(password, user.getPassword());
     }
 
-    public List<User> findAllWithDeleted() {
-        return this.userRepository.findAllWithDeleted();
-    }
-
-    public Optional<User> findUserWithDelete(Long id) {
-        return this.userRepository.findUserWithDelete(id);
-    }
-
     public User save(User user) {
         if(user.getId() == null) {
             Optional<User> userAlreadyExists = this.userRepository.findByCpf(user.getCpf());
 
             if(userAlreadyExists.isPresent()) {
-                throw new AppException("An user with this cpf already exists", "users.alreadyExists");
+                throw new AppException("Um usuário com esse ID já existe", "users.alreadyExists");
             }
 
             user.setPassword(encoder.encode(user.getPassword()));
@@ -61,11 +54,11 @@ public class UserService {
         return this.userRepository.save(user);
     }
 
-    public ResponseEntity<Void> delete(Long id) {
+    public ResponseEntity<Void> delete(UUID id) {
         boolean userExits = this.userRepository.findById(id).isPresent();
 
         if(!userExits) {
-            throw new AppException("Cannot find an user with this id", "users.notFound");
+            throw new AppException("Nenhum usuário com esse ID encontrado.", "users.notFound");
         }
 
         this.userRepository.deleteById(id);

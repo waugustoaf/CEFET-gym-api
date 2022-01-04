@@ -13,10 +13,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.validation.Valid;
 import java.net.URI;
 import java.net.URISyntaxException;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
+import java.util.*;
 
 @RestController
 @RequestMapping("/users")
@@ -32,27 +29,27 @@ public class UserResource {
         this.userService = userService;
     }
 
-    @GetMapping("/")
+    @GetMapping
     public ResponseEntity<List<User>> index() {
         List<User> users = this.userService.findAll();
         return ResponseEntity.ok().body(users);
     }
 
     @GetMapping("{id}")
-    public ResponseEntity<User> show(@PathVariable("id") Long id) {
+    public ResponseEntity<User> show(@PathVariable("id") UUID id) {
         Optional<User> user = this.userService.findOne(id);
 
         if(user.isPresent()) {
             return ResponseEntity.ok().body(user.get());
         } else {
-            throw new AppException("Cannot find an user with this id", "users.notFound");
+            throw new AppException("Nenhum usuário com esse ID encontrado.", "users.notFound");
         }
     }
 
-    @PostMapping("/")
+    @PostMapping
     public ResponseEntity<User> store(@RequestBody @Valid User user) throws URISyntaxException {
         if(user.getId() != null) {
-            throw new AppException("A new user cannot have property id", "users.noIdOnStore");
+            throw new AppException("Um novo usuário não espera um ID.", "users.noIdOnStore");
         }
 
         User response = this.userService.save(user);
@@ -63,11 +60,11 @@ public class UserResource {
     }
 
     @PutMapping("{id}")
-    public ResponseEntity<User> update(@RequestBody @Valid User newUser, @PathVariable("id") Long id) {
+    public ResponseEntity<User> update(@RequestBody @Valid User newUser, @PathVariable("id") UUID id) {
         Optional<User> user = this.userService.findOne(id);
 
         if(!user.isPresent()) {
-            throw new AppException("Cannot find an user with this id", "users.notFound");
+            throw new AppException("Nenhum usuário com esse ID.", "users.notFound");
         }
 
         newUser.setId(user.get().getId());
@@ -79,7 +76,7 @@ public class UserResource {
     }
 
     @DeleteMapping("{id}")
-    public void delete(@PathVariable("id") Long id) {
+    public void delete(@PathVariable("id") UUID id) {
         this.userService.delete(id);
     }
 }

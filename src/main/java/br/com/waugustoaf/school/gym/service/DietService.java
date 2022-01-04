@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.UUID;
 
 @Service
 public class DietService {
@@ -24,7 +25,7 @@ public class DietService {
         return this.dietRepository.findAll();
     }
 
-    public Optional<Diet> findOne(Long id) {
+    public Optional<Diet> findOne(UUID id) {
         return this.dietRepository.findById(id);
     }
 
@@ -32,7 +33,7 @@ public class DietService {
         return this.dietRepository.save(diet);
     }
 
-    public ResponseEntity<Void> delete(Long id) {
+    public ResponseEntity<Void> delete(UUID id) {
         Optional<Diet> dietExists = this.dietRepository.findById(id);
 
         if(dietExists.isEmpty()) {
