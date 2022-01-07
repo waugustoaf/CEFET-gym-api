@@ -27,10 +27,6 @@ public class PlanService {
     }
 
     public Plan save(Plan plan) {
-        if(plan.getId() != null) {
-            throw new AppException("Um novo plano não espera o atributo ID.", "plans.noIdOnStore");
-        }
-
         return this.planRepository.save(plan);
     }
 

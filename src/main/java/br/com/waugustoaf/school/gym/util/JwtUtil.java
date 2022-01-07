@@ -1,6 +1,7 @@
 package br.com.waugustoaf.school.gym.util;
 
 import br.com.waugustoaf.school.gym.domain.User;
+import io.jsonwebtoken.MalformedJwtException;
 import io.jsonwebtoken.SignatureAlgorithm;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

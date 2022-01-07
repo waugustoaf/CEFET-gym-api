@@ -8,6 +8,7 @@ import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
 import javax.persistence.*;
+import javax.validation.constraints.Min;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import java.util.Date;
@@ -38,6 +39,7 @@ public class Plan {
     public String name;
 
     @NotNull(message = "'value' é obrigatório")
+    @Min(value = 0, message = "'value' deve ser positivo")
     @Column(nullable = false, columnDefinition = "decimal(10, 2)")
     public double value;
 

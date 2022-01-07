@@ -46,7 +46,7 @@ public class DietResource {
     @PostMapping
     public ResponseEntity<Diet> store(@RequestBody @Valid Diet diet) throws URISyntaxException {
         if(diet.getId() != null) {
-            throw new AppException("A new diet cannot have property id", "diets.noIdOnStore");
+            throw new AppException("Uma nova dieta não espera o atributo ID", "diets.noIdOnStore");
         }
 
         Diet response = this.dietService.save(diet);
@@ -60,7 +60,7 @@ public class DietResource {
         Optional<Diet> diet = this.dietService.findOne(id);
 
         if(diet.isEmpty()) {
-            throw new AppException("Cannot find a diet with this id", "diets.notFound");
+            throw new AppException("nenhum dieta com esse ID encontrada.", "diets.notFound");
         }
 
         newDiet.setId(diet.get().id);

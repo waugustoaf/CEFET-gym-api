@@ -18,7 +18,7 @@ import java.util.UUID;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-@Entity(name = "user_exercise")
+@Entity(name = "user_exercises")
 public class UserExercise {
     public enum Focus{
         gain,

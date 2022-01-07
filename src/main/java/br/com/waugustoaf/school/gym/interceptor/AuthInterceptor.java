@@ -14,10 +14,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Optional;
-import java.util.UUID;
+import java.util.*;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 @Component
@@ -32,20 +29,24 @@ public class AuthInterceptor implements HandlerInterceptor {
 
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
-        Map<String, String> authorizedExtras = new HashMap<>();
-        authorizedExtras.put("/plans", "GET");
-        authorizedExtras.put("/plans/", "GET");
+        List<String[]> guestAuth = new ArrayList<>();
+        guestAuth.add(new String[]{"/plans", "GET"});
+        guestAuth.add(new String[]{"/users", "POST"});
+        guestAuth.add(new String[]{"/users", "PUT"});
 
-        AtomicBoolean isAuthorized = new AtomicBoolean(false);
+        List<String[]> clientAuth = new ArrayList<>();
+        clientAuth.add(new String[]{"/users", "PUT"});
+        clientAuth.add(new String[]{"/diets", "GET"});
 
-        authorizedExtras.forEach((key, value) -> {
-            if(key.equals(request.getServletPath()) && value.equals(request.getMethod())) {
-                isAuthorized.set(true);
+        List<String[]> employeeAuth = new ArrayList<>();
+        employeeAuth.add(new String[]{"/diets", "POST"});
+        employeeAuth.add(new String[]{"/diets", "PUT"});
+        employeeAuth.add(new String[]{"/users/clients", "GET"});
+
+        for(String[] route : guestAuth) {
+            if(request.getServletPath().startsWith(route[0]) && route[1].equals(request.getMethod())) {
+                return true;
             }
-        });
-
-        if(isAuthorized.get()) {
-            return true;
         }
 
         String token = request.getHeader("authorization");
@@ -79,7 +80,29 @@ public class AuthInterceptor implements HandlerInterceptor {
             throw new AppException("Usuário não encontrado. Relogue-se", 403, "token.invalid");
         }
 
-        return true;
+        User.Role userRole = user.get().getRole();
+
+        if(userRole == User.Role.administrator) {
+            return true;
+        }
+
+        for(String[] route : clientAuth) {
+            if(request.getServletPath().startsWith(route[0]) && route[1].equals(request.getMethod())) {
+                return true;
+            }
+        }
+
+        for(String[] route : employeeAuth) {
+            if(
+                    request.getServletPath().startsWith(route[0])
+                    && route[1].equals(request.getMethod())
+                    && (userRole == User.Role.employee || userRole == User.Role.administrator)
+            ) {
+                return true;
+            }
+        }
+
+        throw new AppException("Você não tem permissão", 403, "error.unauthorized");
     }
 
     @Override

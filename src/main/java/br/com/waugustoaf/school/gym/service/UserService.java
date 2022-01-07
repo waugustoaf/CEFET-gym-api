@@ -36,6 +36,14 @@ public class UserService {
         return this.userRepository.findByEmail(email);
     }
 
+    public Optional<User> findByCPF(String CPF) {
+        return this.userRepository.findByCpf(CPF);
+    }
+
+    public List<User> findClients() {
+        return this.userRepository.findByRole(User.Role.client);
+    }
+
     public Boolean validatePassword(User user, String password) {
         return encoder.matches(password, user.getPassword());
     }

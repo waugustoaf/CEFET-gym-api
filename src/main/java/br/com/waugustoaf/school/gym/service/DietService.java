@@ -37,7 +37,7 @@ public class DietService {
         Optional<Diet> dietExists = this.dietRepository.findById(id);
 
         if(dietExists.isEmpty()) {
-            throw new AppException("Cannot find a diet with this id", "diets.notFound");
+            throw new AppException("Nenhuma dieta com esse ID encontrada.", "diets.notFound");
         }
 
         this.dietRepository.deleteById(id);

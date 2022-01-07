@@ -42,9 +42,12 @@ public class Employee {
     public String education;
 
     @NotNull(message = "employees.payment_day.null")
-    @Min(value = 31, message = "employees.payment_day.except_min")
+    @Min(value = 01, message = "employees.payment_day.except_min")
     @Max(value = 31, message = "employees.payment_day.except_max")
     public int payment_day;
+
+    @OneToOne(fetch = FetchType.EAGER, cascade = CascadeType.MERGE)
+    public User user;
 
     @CreationTimestamp()
     @Temporal(TemporalType.TIMESTAMP)
