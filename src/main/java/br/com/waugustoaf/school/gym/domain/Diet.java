@@ -36,7 +36,7 @@ public class Diet {
     public String food_type;
 
     @NotBlank(message = "diets.instructions.null")
-    @Column(nullable = false)
+    @Column(nullable = false, columnDefinition = "text")
     public String instructions;
 
     @CreationTimestamp()

@@ -29,10 +29,20 @@ public class AuthInterceptor implements HandlerInterceptor {
 
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
+        response.setHeader("Access-Control-Allow-Origin", "*");
+        response.setHeader("Access-Control-Allow-Methods", "GET, POST, PATCH, PUT, DELETE, OPTIONS");
+        response.setHeader("Access-Control-Allow-Headers", "Origin, Content-Type, X-Auth-Token, Authorization");
+
+        if(request.getMethod().equals("OPTIONS")) {
+            response.setHeader("Access-Control-Max-Age", "1728000");
+            response.setStatus(204);
+        }
+
         List<String[]> guestAuth = new ArrayList<>();
         guestAuth.add(new String[]{"/plans", "GET"});
         guestAuth.add(new String[]{"/users", "POST"});
         guestAuth.add(new String[]{"/users", "PUT"});
+        guestAuth.add(new String[]{"/sessions", "POST"});
 
         List<String[]> clientAuth = new ArrayList<>();
         clientAuth.add(new String[]{"/users", "PUT"});
@@ -72,7 +82,6 @@ public class AuthInterceptor implements HandlerInterceptor {
         Optional<User> user = userRepository.findById(UUID.fromString(userId));
 
         if(user.isEmpty()) {
-            log.info("Empty");
             throw new AppException("Usuário não encontrado. Relogue-se", 403, "token.invalid");
         }
 

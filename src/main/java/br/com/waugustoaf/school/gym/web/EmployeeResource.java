@@ -83,7 +83,7 @@ public class EmployeeResource {
         User userResponse = this.userService.save(user);
 
         Employee employee = new Employee();
-        employee.setHoursPerDay(Integer.valueOf(json.get("hours_per_day")));
+        employee.setHoursPerDay(Integer.valueOf(json.get("hoursPerDay")));
         employee.setWage(Integer.valueOf(json.get("wage")));
         employee.setEducation(json.get("education"));
         employee.setPayment_day(Integer.valueOf(json.get("payment_day")));
@@ -106,7 +106,7 @@ public class EmployeeResource {
             throw new AppException("Funcionário não encontrado", "employees.notFound");
         }
 
-        employeeExists.get().setHoursPerDay(Integer.valueOf(json.get("hours_per_day")));
+        employeeExists.get().setHoursPerDay(Integer.valueOf(json.get("hoursPerDay")));
         employeeExists.get().setWage(Integer.valueOf(json.get("wage")));
         employeeExists.get().setEducation(json.get("education"));
         employeeExists.get().setPayment_day(Integer.valueOf(json.get("payment_day")));
@@ -114,13 +114,10 @@ public class EmployeeResource {
 
         User user = employeeExists.get().getUser();
 
-        log.warn(user.getName());
-
         SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
 
         user.setName(json.get("name"));
         user.setEmail(json.get("email"));
-        user.setPassword(json.get("password"));
         user.setCpf(json.get("cpf"));
         user.setPhone(json.get("phone"));
         user.setBirth_date(formatter.parse(json.get("birth_date")));

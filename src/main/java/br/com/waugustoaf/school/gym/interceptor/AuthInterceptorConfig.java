@@ -15,12 +15,7 @@ public class AuthInterceptorConfig extends WebMvcConfigurationSupport {
 
     @Override
     protected void addInterceptors(InterceptorRegistry registry) {
-        List<String> accessibleRoutes = new ArrayList<>();
-        accessibleRoutes.add("/sessions");
-        accessibleRoutes.add("/sessions/");
-
         registry.addInterceptor(authInterceptor)
-                .addPathPatterns("/**")
-                .excludePathPatterns(accessibleRoutes);
+                .addPathPatterns("/**");
     }
 }

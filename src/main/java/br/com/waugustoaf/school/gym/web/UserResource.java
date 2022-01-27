@@ -16,6 +16,8 @@ import javax.swing.text.html.Option;
 import javax.validation.Valid;
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.*;
 
 @RestController
@@ -85,7 +87,7 @@ public class UserResource {
     }
 
     @PutMapping("{id}")
-    public ResponseEntity<User> update(HttpServletRequest request, @RequestBody @Valid User newUser, @PathVariable("id") UUID id) {
+    public ResponseEntity<User> update(HttpServletRequest request, @RequestBody Map<String, String> json, @PathVariable("id") UUID id) throws ParseException {
         Optional<User> user = this.userService.findOne(id);
 
         if(!user.isPresent()) {
@@ -94,7 +96,7 @@ public class UserResource {
 
         String token = request.getHeader("authorization");
         if(token == null) throw new AppException("Token JWT não encontrado. Relogue-se.", 401);
-        String formattedToken = token.replaceAll("BEARER ", "");
+        String formattedToken = token.replaceAll("Bearer ", "");
         String userId = null;
         try {
             userId = this.jwtUtil.extractId(formattedToken);
@@ -107,12 +109,31 @@ public class UserResource {
             throw new AppException("Você só pode alterar sua conta ou um administrador.", 403);
         }
 
-        newUser.setId(user.get().getId());
-        newUser.setCreated_at(user.get().getCreated_at());
+        User oldUser = user.get();
+
+        if(json.get("role") != null) {
+            oldUser.setRole(User.Role.valueOf(json.get("role")));
+        }
+        if(json.get("name") != null) {
+            oldUser.setName(json.get("name"));
+        }
+        if(json.get("email") != null) {
+            oldUser.setEmail(json.get("email"));
+        }
+        if(json.get("cpf") != null) {
+            oldUser.setCpf(json.get("cpf"));
+        }
+        if(json.get("phone") != null) {
+            oldUser.setPhone(json.get("phone"));
+        }
+        if(json.get("birth_date") != null) {
+            SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
+            oldUser.setBirth_date(formatter.parse(json.get("birth_date")));
+        }
 
         return ResponseEntity
                 .ok()
-                .body(this.userService.save(newUser));
+                .body(this.userService.save(oldUser));
     }
 
     @DeleteMapping("{id}")
