@@ -43,6 +43,7 @@ public class AuthInterceptor implements HandlerInterceptor {
         guestAuth.add(new String[]{"/users", "POST"});
         guestAuth.add(new String[]{"/users", "PUT"});
         guestAuth.add(new String[]{"/sessions", "POST"});
+        guestAuth.add(new String[]{"/exercises", "GET"});
 
         List<String[]> clientAuth = new ArrayList<>();
         clientAuth.add(new String[]{"/users", "PUT"});
@@ -52,6 +53,9 @@ public class AuthInterceptor implements HandlerInterceptor {
         employeeAuth.add(new String[]{"/diets", "POST"});
         employeeAuth.add(new String[]{"/diets", "PUT"});
         employeeAuth.add(new String[]{"/users/clients", "GET"});
+        guestAuth.add(new String[]{"/exercises", "POST"});
+        guestAuth.add(new String[]{"/exercises", "PUT"});
+        guestAuth.add(new String[]{"/exercises", "DELETE"});
 
         for(String[] route : guestAuth) {
             if(request.getServletPath().startsWith(route[0]) && route[1].equals(request.getMethod())) {

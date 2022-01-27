@@ -31,16 +31,20 @@ public class Exercise {
     public UUID id;
 
     @NotNull(message = "diets.type.null")
-    @NotBlank(message = "diets.type.null")
     @Column(nullable = false, columnDefinition = "ENUM('gain', 'loss')")
     @Enumerated(EnumType.STRING)
     public Type type;
+
+    @Column(nullable = false)
+    public String name;
+
+    public String description;
 
     @NotBlank(message = "diets.duration.null")
     @Column(nullable = false)
     public String duration;
 
-    @NotBlank(message = "diets.repetitions.null")
+    @NotNull
     @Column(nullable = false)
     public int repetitions;
 
