@@ -24,12 +24,15 @@ public class Payment {
     @org.hibernate.annotations.Type(type = "uuid-char")
     public UUID id;
 
-    @NotBlank(message = "payments.receipt_image.null")
+    @Column(nullable = true)
     public String receipt_image;
 
     @ManyToOne
     @JoinColumn(name = "user_id")
     public User user;
+
+    @Column(columnDefinition = "decimal(14, 2)")
+    public float value;
 
     @CreationTimestamp()
     @Temporal(TemporalType.TIMESTAMP)
