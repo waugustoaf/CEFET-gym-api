@@ -63,7 +63,7 @@ public class DietResource {
             throw new AppException("nenhum dieta com esse ID encontrada.", "diets.notFound");
         }
 
-        newDiet.setId(diet.get().id);
+        newDiet.setId(diet.get().getId());
         newDiet.setCreated_at(diet.get().getCreated_at());
 
         return ResponseEntity
